@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% load crispy_forms_tags%} {% block content%}
+<div class="col-4 offset-4 mt-3">
+  <div class="card mt-3">
+    <div class="card-header">{{post.title}}</div>
+    <div class="card-body">{{post.description}}</div>
+    <div class="flex">
+      <a href="{% url 'blog-update' post.id%}" class="btn btn-info">Update</a>
+      <a href="{% url 'blog-delete' post.id%}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  <div class="comments">
+    {% if post.comments.all|length > 0%} {% for comment in post.comments.all %}
+    <div class="card mt-2">
+      <div class="card-header">{{comment.name}}</div>
+      <div class="card-body">{{comment.comment}}</div>
+    </div>
+    {% endfor %} {% else %}
+    <h2>No Comments</h2>
+    {% endif %}
+  </div>
+  <h2>Add a Comment</h2>
+  <form method="POST">
+    {% csrf_token %} {{form|crispy}}
+    <button class="btn btn-primary mt-2">Create Comment</button>
+  </form>
+</div>
+{% endblock content%}
